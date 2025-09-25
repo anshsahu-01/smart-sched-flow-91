@@ -2,10 +2,40 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar, Users, BookOpen, Brain, CheckCircle, Clock } from "lucide-react";
 import { useNavigation } from "@/pages/Index";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import {
+  ResponsiveContainer,
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  PieChart,
+  Pie,
+  Cell
+} from "recharts";
 import heroImage from "@/assets/hero-classroom.jpg";
 
 const HomePage = () => {
   const { navigateTo } = useNavigation();
+
+  // Sample data for homepage charts
+  const efficiencyData = [
+    { month: 'Jan', efficiency: 78 },
+    { month: 'Feb', efficiency: 82 },
+    { month: 'Mar', efficiency: 85 },
+    { month: 'Apr', efficiency: 88 },
+    { month: 'May', efficiency: 92 },
+    { month: 'Jun', efficiency: 95 },
+  ];
+
+  const institutionTypes = [
+    { name: 'Universities', value: 45, color: '#3B82F6' },
+    { name: 'Colleges', value: 35, color: '#10B981' },
+    { name: 'Technical Schools', value: 20, color: '#F59E0B' },
+  ];
+
   const features = [
     {
       icon: Calendar,
@@ -58,6 +88,7 @@ const HomePage = () => {
           <div className="flex items-center space-x-4">
             <Button variant="ghost">Features</Button>
             <Button variant="ghost">About</Button>
+            <ThemeToggle />
             <Button variant="outline" onClick={() => navigateTo("login")}>Login</Button>
             <Button variant="hero" onClick={() => navigateTo("login")}>Get Started</Button>
           </div>
@@ -116,6 +147,75 @@ const HomePage = () => {
                 <div className="text-muted-foreground">{stat.label}</div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Proof Points with Charts Section */}
+      <section className="py-20 bg-muted/30">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-foreground mb-4">
+              Proven Results Across Institutions
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              See how Smart Classroom has transformed scheduling efficiency for educational institutions worldwide.
+            </p>
+          </div>
+          
+          <div className="grid lg:grid-cols-2 gap-12">
+            {/* Efficiency Trends */}
+            <Card className="p-6">
+              <CardHeader>
+                <CardTitle className="text-xl">Scheduling Efficiency Improvement</CardTitle>
+                <CardDescription>Average efficiency gains over 6 months of implementation</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={300}>
+                  <AreaChart data={efficiencyData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="month" />
+                    <YAxis />
+                    <Tooltip formatter={(value) => [`${value}%`, 'Efficiency']} />
+                    <Area 
+                      type="monotone" 
+                      dataKey="efficiency" 
+                      stroke="hsl(var(--primary))" 
+                      fill="hsl(var(--primary))" 
+                      fillOpacity={0.3}
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            {/* Institution Distribution */}
+            <Card className="p-6">
+              <CardHeader>
+                <CardTitle className="text-xl">Institution Types Using Our Platform</CardTitle>
+                <CardDescription>Distribution of educational institutions by type</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={300}>
+                  <PieChart>
+                    <Pie
+                      data={institutionTypes}
+                      cx="50%"
+                      cy="50%"
+                      outerRadius={100}
+                      fill="#8884d8"
+                      dataKey="value"
+                      label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                    >
+                      {institutionTypes.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                  </PieChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>

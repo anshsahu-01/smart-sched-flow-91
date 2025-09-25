@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Calendar, ArrowLeft, Shield, User, UserCheck } from "lucide-react";
 import { useNavigation } from "@/pages/Index";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const LoginPage = () => {
   const { navigateTo } = useNavigation();
@@ -29,6 +30,11 @@ const LoginPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-hero flex items-center justify-center p-4">
+      {/* Theme Toggle - Absolute positioned */}
+      <div className="absolute top-4 right-4">
+        <ThemeToggle />
+      </div>
+      
       <div className="w-full max-w-md space-y-6 animate-scale-in">
         {/* Header */}
         <div className="text-center space-y-2">
