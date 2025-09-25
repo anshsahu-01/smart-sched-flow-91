@@ -1,13 +1,45 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState, createContext, useContext } from "react";
+import HomePage from "@/components/HomePage";
+import LoginPage from "@/components/LoginPage";
+import Dashboard from "@/components/Dashboard";
+
+// Navigation context
+type NavigationContextType = {
+  currentPage: string;
+  navigateTo: (page: string) => void;
+};
+
+const NavigationContext = createContext<NavigationContextType>({
+  currentPage: "home",
+  navigateTo: () => {},
+});
+
+export const useNavigation = () => useContext(NavigationContext);
 
 const Index = () => {
+  const [currentPage, setCurrentPage] = useState<string>("home");
+
+  const navigateTo = (page: string) => {
+    setCurrentPage(page);
+  };
+
+  const renderPage = () => {
+    switch (currentPage) {
+      case "login":
+        return <LoginPage />;
+      case "dashboard":
+        return <Dashboard />;
+      default:
+        return <HomePage />;
+    }
+  };
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
+    <NavigationContext.Provider value={{ currentPage, navigateTo }}>
+      <div>
+        {renderPage()}
       </div>
-    </div>
+    </NavigationContext.Provider>
   );
 };
 
