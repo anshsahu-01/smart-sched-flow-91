@@ -3,6 +3,7 @@ import TimetableGenerator from "@/components/TimetableGenerator";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { useNavigation } from "@/pages/Index";
 import { 
   Calendar, 
   Users, 
@@ -39,6 +40,7 @@ import {
 } from "recharts";
 
 const Dashboard = () => {
+  const { navigateTo } = useNavigation();
   const [activeTab, setActiveTab] = useState("dashboard");
 
   // Sample data for charts
@@ -217,15 +219,31 @@ const Dashboard = () => {
         <aside className="w-64 border-r bg-card/30 min-h-screen">
           <nav className="p-4 space-y-2">
             {sidebarItems.map((item) => (
-              <Button
-                key={item.id}
-                variant={activeTab === item.id ? "secondary" : "ghost"}
-                className="w-full justify-start"
-                onClick={() => setActiveTab(item.id)}
-              >
-                <item.icon className="h-4 w-4 mr-3" />
-                {item.label}
-              </Button>
+                <Button
+                  key={item.id}
+                  variant={activeTab === item.id ? "secondary" : "ghost"}
+                  className="w-full justify-start"
+                  onClick={() => {
+                    if (item.id === "dashboard") {
+                      setActiveTab(item.id);
+                    } else if (item.id === "generate") {
+                      navigateTo("timetable-generator");
+                    } else if (item.id === "add-data") {
+                      navigateTo("add-data");
+                    } else if (item.id === "review") {
+                      navigateTo("review");
+                    } else if (item.id === "approvals") {
+                      navigateTo("approvals");
+                    } else if (item.id === "analytics") {
+                      navigateTo("analytics");
+                    } else if (item.id === "settings") {
+                      navigateTo("settings");
+                    }
+                  }}
+                >
+                  <item.icon className="h-4 w-4 mr-3" />
+                  {item.label}
+                </Button>
             ))}
           </nav>
         </aside>
